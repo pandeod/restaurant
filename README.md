@@ -1,2 +1,2 @@
 # restaurant
-simple back-end of restaurant
+simple project
