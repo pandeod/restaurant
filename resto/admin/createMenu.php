@@ -136,8 +136,18 @@
 			 $sql="delete from menu where menuName ='$menuName'";
              $result=mysqli_query($db,$sql);
 			  if($result)
-			  {
-				 echo "Menu NOT added !!!";
+			  { 
+		        
+				$file = $fileNameNew;
+                if (!unlink($file))
+                {
+                    echo ("Error deleting $file ...Menu NOT added !!!");
+                }
+                else
+                {
+                   echo ("Menu NOT added !!!");
+                }
+
 			  }
 			}				
 		 }
@@ -148,7 +158,15 @@
              $result=mysqli_query($db,$sql);
 			 if($result)
 			 {
-				 echo "Menu NOT added !!!";
+				 $file = $fileNameNew;
+                if (!unlink($file))
+                {
+                    echo ("Error deleting $file ...Menu NOT added !!!");
+                }
+                else
+                {
+                   echo ("Menu NOT added !!!");
+                }
 			 }
 			 
 		 }

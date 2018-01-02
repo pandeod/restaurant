@@ -1,8 +1,6 @@
 <html>
 <head>
 <title>Resto Table Home</title>
-<script type="text/JavaScript">
-</script>	
 <style>
   #menuTypeDiv:hover{
 	  background-color:lightgrey;
@@ -67,7 +65,7 @@
 	   while($row=mysqli_fetch_array($getList))
 			{
   ?>
-   <table id="menuTypeDiv" style="width:100%;height:40%">
+   <table style="width:100%;height:40%">
   <tr>
      <td rowspan="4" style="width:40%;height:100%; background-image:url('../admin/<?php echo $row['path']; ?>'); background-repeat:no-repeat;"></td>
 	 <td style="padding-left:5%;"><?php echo $row['menuName']; ?></td>
