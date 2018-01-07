@@ -1,6 +1,8 @@
 <html>
 <head>
 <title>Resto Table Home</title>
+<script type="text/JavaScript">
+</script>	
 <style>
   #menuTypeDiv:hover{
 	  background-color:lightgrey;
@@ -32,59 +34,84 @@
 <button type="submit" name="logOut" style="float:right;">LogOut as:<?php echo $_SESSION['user']; ?></button>
 </form>
 </div>
-</center>
-<div style="width:100%;height:80%;border:1px solid black;">
-  <div style="width:25%;height:100%;float:left;border:1px solid black;overflow-y: scroll;">
+
+<form method="post">
+<select multiple name="menuList[]">
 	  <?php 
 	 $rID=$_SESSION["rID"];  
      $db=mysqli_connect('localhost','root','','restomanagement') or die("Error connecting to database");
-	    $sql="select * from menutype where restoID='$rID'";
+	    $sql="select DISTINCT * from menu,restomenu where (restoID='$rID' and menu.menuID=restomenu.menuID )";
 		$result=mysqli_query($db,$sql);
 	   while($row=mysqli_fetch_array($result))
 			{
 		?>
-	<a href="restoTableHome.php?menuTypeID=<?php echo $row['menuTypeID']; ?> "><div id="menuTypeDiv" style="width:100%+1px;border:1px solid black;padding:20px;"><?php echo $row['menuType']; ?></div></a>
-	<a href="restoTableHome.php?menuTypeID=<?php echo $row['menuTypeID']; ?> "><div id="menuTypeDiv" style="width:100%+1px;border:1px solid black;padding:20px;"><?php echo $row['menuType']; ?></div></a>
+	<option value="<?php echo $row['menuID']; ?> "><?php echo $row['menuName']; ?></option>
 		<?php
 			}
 		?>
-  </div>
-  <div style="width:74%;height:100%;float:right;border:1px solid blue;overflow-y: scroll;">
-  <?php  
-  if (isset($_GET['menuTypeID'])) {
-    showMenu($_GET['menuTypeID']);
-  }
- ?>
-  <?php
-  function showMenu($menuTypeID) {
-     $rID=$_SESSION["rID"];  
-     $db=mysqli_connect('localhost','root','','restomanagement') or die("Error connecting to database");
+</select><br><br>
 
-    $menuList="select DISTINCT * from menu,restomenu where ( restomenu.menuID=menu.menuID and restoID='$rID' and menuTypeID='$menuTypeID' )";
-	$getList=mysqli_query($db,$menuList);
-	   while($row=mysqli_fetch_array($getList))
-			{
-  ?>
-   <table style="width:100%;height:40%">
-  <tr>
-     <td rowspan="4" style="width:40%;height:100%; background-image:url('../admin/<?php echo $row['path']; ?>'); background-repeat:no-repeat;"></td>
-	 <td style="padding-left:5%;"><?php echo $row['menuName']; ?></td>
-   </tr>
-   <tr>
-	 <td style="padding-left:5%;"><?php echo $row['price']; ?></td>
-   </tr>
-   <tr>
-	 <td style="padding-left:5%;"><?php echo $row['discription']; ?></td>
-   </tr>
- </table>
- <?php  
-			}
+<input type="submit" name="showList" value="Move Items to Cart">
+
+</form>
+<form method="post">
+<ul>
+<?php
+  if(isset($_POST['showList']))
+  {
+	if(isset($_POST['menuList']))
+   {
+	 foreach($_POST['menuList'] as $menuID)   
+	 {
+		$sql="select * from menu where menuID='$menuID'";
+		$result=mysqli_query($db,$sql);
+	    $row=mysqli_fetch_array($result);
+		
+		$x=array();
+		array_push($x,$menuID);
+?>
+ <li> 
+    <span style="margin:20px;"> <?php echo $row['menuName'] ?>  </span>
+	<span style="margin:20px;"> <?php echo $row['price'] ?> </span>
+	<span style="margin:20px;"> <input name="orderMenuID[]" type="number" min="0" > </span>
+ </li>  <br>
+<?php		
+	 }
+	 $totalItems=count($x);
+	 $_SESSION['totalItems']=$totalItems;
+   }
+   else
+   {
+	   echo "Select atleast one item !!!";
+   }
   }
+?> 
+ </ul>
+<input type="submit" name="confirmOrder" value="Confirm Order">
+</form> 
+
+ <ol>
+ <?php
+   if(isset($_POST['confirmOrder']))
+   {
+	   for($i=0;$i<$_SESSION['totalItems'];$i=$i+1)
+	   { 
+	     $orderMenuID = $_POST['orderMenuID'][i];
+	     $quantity=$orderMenuID;
+		 $sql="select * from menu where menuID='$orderMenuID'";
+		 $result=mysqli_query($db,$sql);
+	     $row=mysqli_fetch_array($result);		 
   ?>
-  </div>
-</div>
-<div>  
- <center><a href="restoTableOrder.php"><button type="button" style="margin:10px;padding:10px;">Proceed to Order</button></a> </center>
-</div>
+  <li> 
+    <span style="margin:20px;"> <?php echo $row['menuName']; ?>  </span>
+	<span style="margin:20px;"> <?php echo $row['price']; ?> </span>
+	<span style="margin:20px;"> <?php echo $quantity; ?> </span>
+ </li>  <br>
+<?php  
+	   }
+   }
+ ?>
+ </ol>
+ </center>
 </body>
 </html>

@@ -18,6 +18,7 @@
  echo $_SESSION['restoName']; 
  echo "<br>";
  echo $_SESSION['location'];
+ $menuTypeID=1;
  ?> 
 </h2> 
 <?php
@@ -69,7 +70,7 @@
   ?>
    <table id="menuTypeDiv" style="width:100%;height:40%">
   <tr>
-     <td rowspan="4" style="width:40%;height:100%; background-image:url('../admin/<?php echo $row['path']; ?>'); background-repeat:no-repeat;"></td>
+     <td rowspan="4" style="width:40%;height:100%;background-size: 100%; background-image:url('../admin/<?php echo $row['path']; ?>'); background-repeat:no-repeat;"></td>
 	 <td style="padding-left:5%;"><?php echo $row['menuName']; ?></td>
    </tr>
    <tr>
