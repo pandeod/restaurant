@@ -97,9 +97,12 @@
 				  $_SESSION["restoName"]=$rw['restoName'];
 				  $_SESSION["location"]=$rw['location'];
 				  $_SESSION["user"]=$uName;	
+				  $_SESSION['menuList']=array();
+				  $_SESSION['menuQuantity']=array();
+				  $_SESSION['TotalBill']=0;
 				}
 				
-			    header("Location:table/restoTableHome.php");
+			    header("Location:table/restoTableHome.php?menuTypeID=1");
 				exit();
 		    } 
         	 else
