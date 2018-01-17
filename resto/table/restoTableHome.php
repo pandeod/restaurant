@@ -47,8 +47,7 @@
       {
     ?>
   <a href="restoTableHome.php?menuTypeID=<?php echo $row['menuTypeID']; ?> "><div id="menuTypeDiv" style="width:100%+1px;border:1px solid black;padding:20px;"><?php echo $row['menuType']; ?></div></a>
-  <a href="restoTableHome.php?menuTypeID=<?php echo $row['menuTypeID']; ?> "><div id="menuTypeDiv" style="width:100%+1px;border:1px solid black;padding:20px;"><?php echo $row['menuType']; ?></div></a>
-    <?php
+	<?php
       }
     ?>
   </div>
@@ -74,7 +73,7 @@
   <tr>
      <td rowspan="3" style="width:40%;height:100%;background-size: 100%; background-image:url('../admin/<?php echo $row['path']; ?>'); background-repeat:no-repeat;"></td>
    <td style="padding-left:5%;"><?php echo $row['menuName']; ?></td>
-   <td rowspan="3"><input id="quantity" name="quantity" value="0" type="number"/> </td>
+   <td rowspan="3"><input id="<?php echo 'quantity'.$mID ?>" name="quantity" type="number"/> </td>
    <td rowspan="3">
     <a href="restoTableHome.php?menuTypeID=<?php echo $row['menuTypeID']; ?>&action=<?php echo $mID; ?>"><button id="addToCart" name="addToCart">Add to Cart</button>
     </a>
@@ -87,13 +86,23 @@
    <td style="padding-left:5%;"><?php echo $row['discription']; ?></td>
    </tr>
  </table>
+ <script>
+    var q=document.getElementById(<?php echo "quantity".$mID; ?>).value();
+	alert("Hello");
+   </script>
 <?php  
     if(isset($_GET['action']))
 	{
 	  if($_GET['action']==$mID)
 	 { 
-        $q=5;
-		updateToList($_GET['action'],$q);
+ ?>
+   <?php echo "quantity".$mID; ?>
+ <?php
+        $str="<script>document.write(q)</script>";
+		//$q=5;
+		$d=(int)$str;
+		echo $str;
+		updateToList($_GET['action'],$d);
      }	
 	}		 
   }
